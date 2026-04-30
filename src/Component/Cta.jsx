@@ -17,7 +17,7 @@ function CTA() {
                     and give your loved ones peace of mind— without changing your lifestyle.
                 </p>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div className="flex items-center justify-center">
                     <Link to='/Signup'>
                         <button
                             className="flex items-center justify-center gap-2 border border-white/20 px-8 py-4 rounded-xl text-lg font-semibold text-gray-300 hover:bg-white/10 transition cursor-pointer">Sign
