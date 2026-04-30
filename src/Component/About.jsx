@@ -21,7 +21,7 @@ function About() {
     ];
 
     return (
-        <section className="pb-20 text-white overflow-hidden">
+        <section className="py-20 text-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 relative">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold">About <span
