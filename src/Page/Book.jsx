@@ -34,7 +34,7 @@ function Book() {
                                 </div>
 
                                 <button
-                                    className="w-full bg-orange-500 text-black py-2 rounded-lg hover:bg-orange-600 transition cursor-pointer">
+                                    className="w-full bg-orange-500 text-black py-2 rounded-lg hover:bg-orange-600 duration-1000 hover:text-white transition cursor-pointer">
                                     View Details
                                 </button>
                             </div>
