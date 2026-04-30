@@ -17,7 +17,7 @@ function Pricing() {
                 <div className="grid md:grid-cols-2 gap-10">
 
                     <div
-                        className="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl hover:-translate-y-2 hover:border-orange-500/40 transition flex justify-between flex-col">
+                        className="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl hover:-translate-y-2 hover:border-orange-500/40 transition flex justify-between flex-col duration-1000 cursor-pointer">
                         <h3 className="text-xl font-semibold mb-4">Basic Plan</h3>
                         <p className="text-4xl font-bold mb-2">
                             $4.99 <span className="text-lg text-gray-400">/month</span>
@@ -40,13 +40,13 @@ function Pricing() {
                         </ul>
 
                         <button onClick={() => setPricing("basic")}
-                                className="w-full border border-white/20 py-3 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                                className="w-full border border-white/20 py-3 rounded-xl hover:bg-white/10 transition duration-1000 cursor-pointer">
                             Choose Plan
                         </button>
                     </div>
 
                     <div
-                        className="relative bg-gradient-to-b from-orange-500/20 to-transparent border border-orange-500/30 p-8 rounded-2xl hover:scale-105 transition shadow-[0_0_40px_rgba(255,165,0,0.15)] flex justify-between flex-col">
+                        className="relative bg-gradient-to-b from-orange-500/20 to-transparent border border-orange-500/30 p-8 rounded-2xl hover:scale-105 transition shadow-[0_0_40px_rgba(255,165,0,0.15)] flex justify-between flex-col duration-1000 cursor-pointer">
                         <span
                             className="absolute top-4 right-4 bg-orange-500 text-black text-xs px-3 py-1 rounded-full">Most Popular</span>
                         <h3 className="text-xl font-semibold mb-4">Premium Plan</h3>
@@ -67,7 +67,7 @@ function Pricing() {
                         </ul>
 
                         <button onClick={() => setPricing("premium")}
-                            className="w-full bg-orange-500 text-black py-3 rounded-xl hover:bg-orange-600 transition cursor-pointer">
+                            className="w-full bg-orange-500 text-black py-3 rounded-xl hover:bg-orange-600 transition duration-1000 hover:text-white cursor-pointer">
                             Choose Plan
                         </button>
                     </div>

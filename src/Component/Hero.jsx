@@ -56,28 +56,28 @@ function Hero() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div
-                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition cursor-pointer">
+                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition duration-1000 cursor-pointer">
                         <IconCpu className="text-orange-400 mb-4"/>
                         <h4 className="font-semibold">AI-Powered</h4>
                         <p className="text-sm text-gray-400">Smart automation</p>
                     </div>
 
                     <div
-                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition cursor-pointer">
+                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition duration-1000 cursor-pointer">
                         <IconBolt className="text-orange-400 mb-4"/>
                         <h4 className="font-semibold">Lightning Fast</h4>
                         <p className="text-sm text-gray-400">Optimized performance</p>
                     </div>
 
                     <div
-                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition cursor-pointer">
+                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition duration-1000 cursor-pointer">
                         <IconLock className="text-orange-400 mb-4"/>
                         <h4 className="font-semibold">Secure</h4>
                         <p className="text-sm text-gray-400">Enterprise-grade</p>
                     </div>
 
                     <div
-                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition cursor-pointer">
+                        className="bg-[#141419] p-6 rounded-2xl border border-orange-500/20 hover:scale-105 transition duration-1000 cursor-pointer">
                         <IconCloud className="text-orange-400 mb-4"/>
                         <h4 className="font-semibold">Cloud-Ready</h4>
                         <p className="text-sm text-gray-400">Scalable infrastructure</p>

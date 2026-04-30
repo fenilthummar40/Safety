@@ -84,7 +84,7 @@ function Contact() {
                             </div>
 
                             <button type="submit"
-                                    className="w-full bg-orange-500 text-black py-3 rounded-xl flex items-center justify-center gap-2 font-semibold hover:bg-orange-600 transition cursor-pointer">Send
+                                    className="w-full bg-orange-500 text-black py-3 rounded-xl flex items-center justify-center gap-2 font-semibold hover:bg-orange-600 transition cursor-pointer duration-1000 hover:text-white">Send
                                 Message <IconSend size={18}/>
                             </button>
                         </form>

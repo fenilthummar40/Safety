@@ -23,7 +23,7 @@ function Book() {
 
                     {trips.map((trip) => (
                         <div key={trip.id} onClick={() => navigate(`/BookingDetail/${trip.id}`)}
-                             className="bg-[#141419] border border-white/10 rounded-2xl overflow-hidden hover:scale-105 transition cursor-pointer">
+                             className="bg-[#141419] border border-white/10 rounded-2xl overflow-hidden hover:scale-105 transition duration-1000 cursor-pointer">
                             <img src={trip.img} alt={trip.title} className="w-full h-60 object-cover"/>
                             <div className="p-6">
                                 <h3 className="text-xl font-semibold mb-3 text-white">{trip.title}</h3>

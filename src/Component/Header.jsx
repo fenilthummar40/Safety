@@ -65,7 +65,7 @@ function Header() {
 
     return (
         <>
-            <header className="bg-black border-b border-gray-800 backdrop-blur-md">
+            <header className="bg-black/20 border-b border-gray-800 backdrop-blur-md">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
                     <div className="flex items-center gap-2">
@@ -158,7 +158,7 @@ function Header() {
                 </div>
 
                 {menuOpen && (
-                    <div className="md:hidden bg-black text-white px-4 pb-4 space-y-3">
+                    <div className="md:hidden bg-black/20 backdrop-blur-md text-white px-4 pb-4 space-y-3">
                         <NavLink to="/" className="block">Home</NavLink>
                         <NavLink to="/About" className="block">About</NavLink>
                         <NavLink to="/Pricing" className="block">Pricing</NavLink>

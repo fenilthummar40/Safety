@@ -52,11 +52,11 @@ function Works() {
                         <div key={index} className="relative text-center group">
 
                             <div
-                                className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-[#141419] border border-orange-500/30 text-orange-400 group-hover:scale-110 transition cursor-pointer">{step.icon}
+                                className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-[#141419] border border-orange-500/30 text-orange-400 group-hover:scale-110 transition duration-1000 cursor-pointer">{step.icon}
                             </div>
 
                             <div
-                                className="mt-6 bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl hover:translate-y-[-5px] transition cursor-pointer">
+                                className="mt-6 bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl hover:translate-y-[-5px] transition duration-1000 cursor-pointer">
                                 <h3 className="font-semibold text-lg">{step.title}</h3>
                                 <p className="text-gray-400 text-sm mt-2">{step.desc}</p>
                             </div>

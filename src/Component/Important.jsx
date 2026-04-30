@@ -42,7 +42,7 @@ function Important() {
                     {audience.map((item, index) => (
                         <div
                             key={index}
-                            className="group bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl text-center hover:translate-y-[-6px] hover:border-orange-500/40 transition cursor-pointer">
+                            className="group bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl text-center hover:translate-y-[-6px] hover:border-orange-500/40 transition duration-1000 cursor-pointer">
                             <div
                                 className="w-16 h-16 mx-auto flex items-center justify-center rounded-xl bg-[#141419] text-orange-400 mb-5 group-hover:scale-110 transition">
                                 {item.icon}
@@ -65,7 +65,7 @@ function Important() {
 
                 <div className="text-center">
                     <button
-                        className="bg-orange-500 text-black px-10 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 hover:scale-105 transition shadow-[0_0_30px_rgba(255,165,0,0.3)] cursor-pointer">Start
+                        className="bg-orange-500 text-black px-10 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 hover:scale-105 duration-1000 hover:text-white transition shadow-[0_0_30px_rgba(255,165,0,0.3)] cursor-pointer">Start
                         Free Today
                     </button>
                 </div>

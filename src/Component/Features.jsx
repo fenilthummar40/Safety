@@ -58,7 +58,7 @@ function Features() {
 
                     {features.map((item, index) => (
                         <div key={index}
-                             className="group bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl hover:translate-y-[-6px] hover:border-orange-500/40 transition duration-300 cursor-pointer">
+                             className="group bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl hover:translate-y-[-6px] hover:border-orange-500/40 transition duration-1000 cursor-pointer">
                             <div
                                 className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#141419] text-orange-400 mb-4 group-hover:scale-110 transition">
                                 {item.icon}
