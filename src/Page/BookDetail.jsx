@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import Header from "../Component/Header.jsx";
 import {trips} from "../assets/assets.js";
 import Footer from "../Component/Footer.jsx";
@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 function BookDetail() {
 
     const {id} = useParams();
+    const navigate = useNavigate();
+
     const trip = trips.find((t) => t.id === parseInt(id));
 
     const [status, setStatus] = useState("idle");
@@ -16,10 +18,29 @@ function BookDetail() {
     const [alertSent, setAlertSent] = useState(false);
     const [isSafe, setIsSafe] = useState(false);
 
-    const getMinutes = (duration) => {
-        if (duration.includes("Hour")) return parseInt(duration) * 60;
-        if (duration.includes("Min")) return parseInt(duration);
-        return 60;
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const user = localStorage.getItem("currentUser");
+
+        if (!isLoggedIn || !user) {
+            toast.error("Please login first 🔐");
+
+            setTimeout(() => {
+                navigate("/Login");
+            }, 1500);
+        }
+    }, []);
+
+    const getSeconds = (duration) => {
+        if (duration.includes("Hour")) return parseInt(duration) * 60 * 60;
+        if (duration.includes("Min")) return parseInt(duration) * 60;
+        return 60 * 60;
+    };
+
+    const formatTime = (seconds) => {
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        return `${min}:${sec < 10 ? "0" : ""}${sec}`;
     };
 
     const saveActivity = (type) => {
@@ -38,7 +59,6 @@ function BookDetail() {
 
     const sendAlert = () => {
         saveActivity("ALERT");
-
         setAlertSent(true);
         toast.error(`Alert sent to ${trip.contact}`);
     };
@@ -49,7 +69,7 @@ function BookDetail() {
         if (status === "running" && timeLeft > 0) {
             timer = setInterval(() => {
                 setTimeLeft((prev) => prev - 1);
-            }, 60000);
+            }, 1000);
         }
 
         if (timeLeft === 0 && status === "running" && !isSafe) {
@@ -99,7 +119,7 @@ function BookDetail() {
                         </p>
 
                         {status !== "idle" && (
-                            <p className="text-gray-400">Time Left: {timeLeft} minutes</p>
+                            <p className="text-gray-400">Time Left: {formatTime(timeLeft)}</p>
                         )}
                     </div>
 
@@ -115,24 +135,39 @@ function BookDetail() {
                         </div>
                     )}
 
+                    {/* Buttons same as your code */}
                     <div className="flex items-center flex-wrap gap-4">
 
                         <button onClick={() => {
-                            setStatus("running");
-                            setTimeLeft(getMinutes(trip.duration));
-                            setAlertSent(false);
-                            setIsSafe(false);
-                            saveActivity("START");
-                            toast.success("Check-in Started");
-                        }} className="bg-orange-500 text-black px-6 py-3 rounded-xl cursor-pointer">
-                            Start Check-in
+                            if (status === "paused") {
+                                setStatus("running");
+                                toast.success("Resumed");
+                                saveActivity("RESUME");
+                            } else {
+                                setStatus("running");
+                                setTimeLeft(getSeconds(trip.duration));
+                                setAlertSent(false);
+                                setIsSafe(false);
+                                saveActivity("START");
+                                toast.success("Check-in Started");
+                            }
+                        }} disabled={status === "running"}
+                                className={`px-6 py-3 rounded-xl 
+                                ${status !== "running"
+                                    ? "bg-orange-500 text-black"
+                                    : "bg-gray-600 cursor-not-allowed"}`}>
+                            {status === "paused" ? "Resume" : "Start"}
                         </button>
 
                         <button onClick={() => {
                             setStatus("paused");
                             saveActivity("PAUSE");
-                            toast.info("Check-in Paused");
-                        }} className="border border-white/20 px-6 py-3 rounded-xl cursor-pointer">
+                            toast.info("Paused");
+                        }} disabled={status !== "running"}
+                                className={`px-6 py-3 rounded-xl border 
+                                ${status === "running"
+                                    ? "border-white/20"
+                                    : "border-gray-600 text-gray-500 cursor-not-allowed"}`}>
                             Pause
                         </button>
 
@@ -142,7 +177,11 @@ function BookDetail() {
                             setTimeLeft(0);
                             saveActivity("SAFE");
                             toast.success("You're Safe");
-                        }} className="bg-green-500 text-black px-6 py-3 rounded-xl cursor-pointer">
+                        }} disabled={!(status === "running" || status === "paused")}
+                                className={`px-6 py-3 rounded-xl 
+                                ${(status === "running" || status === "paused")
+                                    ? "bg-green-500 text-black"
+                                    : "bg-gray-600 cursor-not-allowed"}`}>
                             I'm Safe
                         </button>
 
@@ -153,15 +192,20 @@ function BookDetail() {
                             setIsSafe(false);
                             saveActivity("RESET");
                             toast.warn("Reset Done");
-                        }} className="border border-red-500 text-red-400 px-6 py-3 rounded-xl cursor-pointer">
+                        }} disabled={status === "idle"}
+                                className={`px-6 py-3 rounded-xl border 
+                                ${status !== "idle"
+                                    ? "border-red-500 text-red-400"
+                                    : "border-gray-600 text-gray-500 cursor-not-allowed"}`}>
                             Reset
                         </button>
+
                     </div>
                 </div>
             </section>
 
             <Footer/>
-            <ToastContainer position="top-right" autoClose={3000}/>
+            <ToastContainer position="top-right" autoClose={2000}/>
         </>
     );
 }

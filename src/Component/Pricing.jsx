@@ -6,10 +6,7 @@ function Pricing() {
     const [pricing, setPricing] = useState(null);
 
     return (
-        <section className="py-20 bg-[#0b0b0f] text-white relative overflow-hidden">
-
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-500 opacity-10 blur-[120px]"/>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-yellow-500 opacity-10 blur-[120px]"/>
+        <section className="py-20 text-white overflow-hidden">
 
             <div className="max-w-7xl mx-auto px-6 text-center relative">
 
@@ -20,7 +17,7 @@ function Pricing() {
                 <div className="grid md:grid-cols-2 gap-10">
 
                     <div
-                        className="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl hover:-translate-y-2 hover:border-orange-500/40 transition">
+                        className="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl hover:-translate-y-2 hover:border-orange-500/40 transition flex justify-between flex-col">
                         <h3 className="text-xl font-semibold mb-4">Basic Plan</h3>
                         <p className="text-4xl font-bold mb-2">
                             $4.99 <span className="text-lg text-gray-400">/month</span>
@@ -49,7 +46,7 @@ function Pricing() {
                     </div>
 
                     <div
-                        className="relative bg-gradient-to-b from-orange-500/20 to-transparent border border-orange-500/30 p-8 rounded-2xl hover:scale-105 transition shadow-[0_0_40px_rgba(255,165,0,0.15)]">
+                        className="relative bg-gradient-to-b from-orange-500/20 to-transparent border border-orange-500/30 p-8 rounded-2xl hover:scale-105 transition shadow-[0_0_40px_rgba(255,165,0,0.15)] flex justify-between flex-col">
                         <span
                             className="absolute top-4 right-4 bg-orange-500 text-black text-xs px-3 py-1 rounded-full">Most Popular</span>
                         <h3 className="text-xl font-semibold mb-4">Premium Plan</h3>

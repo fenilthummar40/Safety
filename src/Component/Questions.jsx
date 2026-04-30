@@ -28,10 +28,7 @@ function Questions() {
     const [open, setOpen] = useState(null);
 
     return (
-        <section className="py-20 bg-[#0b0b0f] text-white relative overflow-hidden">
-
-            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-orange-500 opacity-10 blur-[100px]"/>
-            <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-yellow-500 opacity-10 blur-[100px]"/>
+        <section className="py-20 text-white overflow-hidden">
 
             <div className="max-w-4xl mx-auto px-6 relative">
                 <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Frequently Asked <span

@@ -16,7 +16,9 @@ import Profile from "./Page/Profile.jsx";
 function App() {
 
     return (
-        <>
+        <div className='relative overflow-hidden bg-[#0b0b0f]'>
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500 opacity-20 blur-[120px]"></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-yellow-500 opacity-10 blur-[100px]"></div>
             <BrowserRouter>
                 <Routes>
                     <Route path="/Signup" element={<Signup/>}/>
@@ -33,7 +35,7 @@ function App() {
                     <Route path="/Profile" element={<Profile/>}/>
                 </Routes>
             </BrowserRouter>
-        </>
+        </div>
     )
 }
 

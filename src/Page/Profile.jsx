@@ -15,15 +15,14 @@ function Profile() {
         {id: "bookings", label: "Bookings", icon: <IconCalendar size={18}/>},
     ];
 
-
     return (
         <>
             <Header/>
 
-            <section className="min-h-[calc(100vh-73px)] bg-[#0b0b0f] text-white py-10 px-4">
+            <section className="min-h-[calc(100vh-73px)] text-white py-10 px-4">
                 <div className="max-w-7xl mx-auto flex gap-8">
                     <div
-                        className="w-72 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 h-[765px] overflow-y-scroll no-scrollbar">
+                        className="w-72 backdrop-blur-lg border border-white/10 rounded-2xl p-6 h-[765px] overflow-y-scroll no-scrollbar">
                         <h2 className="text-lg font-semibold mb-6 text-orange-400">My Account</h2>
                         <ul className="space-y-2">
                             {menu.map((item) => (
@@ -40,7 +39,7 @@ function Profile() {
                     </div>
 
                     <div
-                        className="flex-1 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 h-[765px] overflow-y-scroll no-scrollbar">
+                        className="flex-1 backdrop-blur-lg border border-white/10 rounded-2xl p-8 h-[765px] overflow-y-scroll no-scrollbar">
                         {activeTab === "add" && (
                             <>
                                 <h2 className="text-2xl font-semibold mb-4 text-orange-400">Add Profile</h2>
@@ -126,8 +125,7 @@ function Profile() {
                                         <div className="text-right">
                                             <p className="text-sm text-white mb-2">feni@gmail.com</p>
                                             <button
-                                                className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">
-                                                Change
+                                                className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">Change
                                             </button>
                                         </div>
                                     </div>
@@ -136,8 +134,7 @@ function Profile() {
                                         className="bg-[#141419] border border-white/10 rounded-xl p-5 flex items-center justify-between mt-5">
                                         <h5 className="text-lg font-semibold text-white">Account Verify</h5>
                                         <button
-                                            className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">
-                                            Verify
+                                            className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">Verify
                                         </button>
                                     </div>
 
@@ -145,8 +142,7 @@ function Profile() {
                                         className="bg-[#141419] border border-white/10 rounded-xl p-5 flex items-center justify-between mt-5">
                                         <h5 className="text-lg font-semibold text-white">Password Change</h5>
                                         <button
-                                            className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">
-                                            Change
+                                            className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">Change
                                         </button>
                                     </div>
                                 </div>
@@ -155,7 +151,7 @@ function Profile() {
 
                         {activeTab === "bookings" && (
                             <>
-                                <h2 className="text-2xl font-semibold mb-6 text-orange-400">Bookings / Activity
+                                <h2 className="text-2xl font-semibold mb-6 text-orange-400">Your Safety Trips
                                     History</h2>
                                 {(() => {
                                     const data = JSON.parse(localStorage.getItem("activity")) || [];

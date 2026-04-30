@@ -9,10 +9,7 @@ import {
 
 function Hero() {
     return (
-        <section className="bg-[#0b0b0f] min-h-screen text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500 opacity-20 blur-[120px]"></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-yellow-500 opacity-10 blur-[100px]"></div>
-
+        <section className="min-h-screen text-white overflow-hidden">
             <Header/>
 
             <div className="max-w-7xl mx-auto px-6 pt-20 grid md:grid-cols-2 gap-12 items-center">

@@ -30,10 +30,8 @@ function Works() {
     ];
 
     return (
-        <section className="py-20 bg-[#0b0b0f] text-white relative overflow-hidden">
+        <section className="py-20 text-white overflow-hidden">
 
-            <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-orange-500 opacity-10 blur-[120px]"/>
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-yellow-500 opacity-10 blur-[120px]"/>
 
             <div className="max-w-7xl mx-auto px-6 relative">
 

@@ -12,9 +12,7 @@ function Contact() {
         <>
             <Header/>
 
-            <section className="min-h-screen py-20 bg-[#0b0b0f] text-white relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-orange-500 opacity-10 blur-[120px]"/>
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-yellow-500 opacity-10 blur-[120px]"/>
+            <section className="min-h-screen py-20 text-white overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 relative">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold">
@@ -72,7 +70,14 @@ function Contact() {
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-400">Message :s</label>
+                                <label className="text-sm text-gray-400">Phone Number :</label>
+                                <input type="number" placeholder="Enter your phone number"
+                                       className="w-full mt-1 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 focus:border-orange-500 outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="text-sm text-gray-400">Message :</label>
                                 <textarea rows="4" placeholder="Write your message..."
                                           className="w-full mt-1 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 focus:border-orange-500 outline-none"
                                 />
