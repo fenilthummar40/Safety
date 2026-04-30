@@ -161,6 +161,8 @@ function Header() {
                     <div className="md:hidden bg-black text-white px-4 pb-4 space-y-3">
                         <NavLink to="/" className="block">Home</NavLink>
                         <NavLink to="/About" className="block">About</NavLink>
+                        <NavLink to="/Pricing" className="block">Pricing</NavLink>
+                        <NavLink to="/Book" className="block">Book</NavLink>
                         <NavLink to="/Contact" className="block">Contact</NavLink>
                         <NavLink to="/Faq" className="block">FAQ</NavLink>
                     </div>
