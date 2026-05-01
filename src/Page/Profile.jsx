@@ -22,7 +22,7 @@ function Profile() {
         <>
             <Header/>
 
-            <section className="min-h-[calc(100vh-73px)] text-white py-6 px-4">
+            <section className="min-h-[calc(100vh-120px)] text-white py-6 px-4">
                 <div className="max-w-7xl mx-auto flex gap-6">
                     <button onClick={() => setSidebarOpen(true)}
                             className="md:hidden fixed top-20 left-4 z-50 bg-orange-500 p-2 rounded-lg"><IconMenu2/>

@@ -69,8 +69,7 @@ function Header() {
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
                     <div className="flex items-center gap-2">
-                        <img className="w-10" src={assets.logo} alt=""/>
-                        <h1 className="text-white text-xl font-bold hidden sm:block">Safety</h1>
+                        <img className="w-20" src={assets.logo} alt=""/>
                     </div>
 
                     <ul className="hidden md:flex items-center gap-8">

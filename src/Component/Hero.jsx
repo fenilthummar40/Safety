@@ -20,7 +20,7 @@ function Hero() {
         <section className="min-h-screen text-white overflow-hidden">
             <Header/>
 
-            <div className='flex items-center justify-center min-h-[calc(100vh-73px)]'>
+            <div className='flex items-center justify-center min-h-[calc(100vh-120px)]'>
                 <div className="max-w-7xl mx-auto px-6 py-6 grid md:grid-cols-2 gap-12 items-center">
 
                     <motion.div variants={staggerContainer} initial="hidden" animate="show">

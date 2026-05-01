@@ -9,11 +9,7 @@ function CTA() {
         show: {opacity: 1, y: 0, transition: {duration: 0.7}}
     };
     return (
-        <section className="py-20 bg-[#0b0b0f] text-white relative overflow-hidden">
-
-            <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-orange-500 opacity-20 blur-[140px]"/>
-            <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-yellow-500 opacity-10 blur-[100px]"/>
+        <section className="py-20 bg-[#0b0b0f] text-white">
             <div className="max-w-5xl mx-auto px-6 text-center relative">
                 <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{once: true}}
                            className="text-4xl md:text-6xl font-bold leading-tight mb-6">Your Safety Should Never Be

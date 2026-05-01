@@ -4,6 +4,7 @@ import {trips} from "../assets/assets.js";
 import Footer from "../Component/Footer.jsx";
 import {useState, useEffect, useRef} from "react";
 import {ToastContainer, toast} from "react-toastify";
+import {motion} from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 
 function BookDetail() {
@@ -21,12 +22,24 @@ function BookDetail() {
     const contactIndexRef = useRef(0);
     const contacts = [trip?.contact, "Backup +91 000"];
 
+    const fadeUp = {
+        hidden: {opacity: 0, y: 40},
+        show: {opacity: 1, y: 0, transition: {duration: 0.6}}
+    };
+
+    const stagger = {
+        hidden: {},
+        show: {
+            transition: {staggerChildren: 0.2}
+        }
+    };
+
     useEffect(() => {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
         const user = JSON.parse(localStorage.getItem("currentUser"));
 
         if (!isLoggedIn || !user) {
-            toast.error("Please login first 🔐");
+            toast.error("Please login first");
             setTimeout(() => navigate("/Login"), 1500);
         }
     }, [navigate]);
@@ -76,7 +89,6 @@ function BookDetail() {
             connectTimerRef.current = setTimeout(() => {
                 if (isSafe || connected) return;
                 setShowConnect(true);
-
                 alertTimerRef.current = setTimeout(() => {
                     if (isSafe || connected) return;
                     setShowConnect(false);
@@ -131,43 +143,45 @@ function BookDetail() {
         <>
             <Header/>
 
-            <section className="bg-[#0b0b0f] text-white px-6 py-10">
+            <motion.section initial="hidden" animate="show" variants={stagger}
+                            className="bg-[#0b0b0f] text-white px-6 py-10">
                 <div className="max-w-7xl mx-auto">
-                    <img alt={trip.title} src={trip.img} className="w-full h-[400px] object-cover rounded-xl mb-6"/>
+                    <motion.img variants={fadeUp} whileHover={{scale: 1.03}} src={trip.img}
+                                className="w-full h-[400px] object-cover rounded-xl mb-6 duration-1000 cursor-pointer"/>
 
-                    <div className="grid md:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
-                            <p className="text-sm text-gray-500">Time</p>
-                            <h3>{trip.time}</h3>
-                        </div>
+                    <motion.div variants={stagger} className="grid md:grid-cols-3 gap-6 mb-8">
+                        {[
+                            {label: "Time", value: trip.time},
+                            {label: "Duration", value: trip.duration},
+                            {label: "Emergency Contact", value: trip.contact},
+                        ].map((item, i) => (
+                            <motion.div key={i} variants={fadeUp} whileHover={{scale: 1.05}}
+                                        className="bg-[#141419] p-5 rounded-xl duration-1000 cursor-pointer">
+                                <p className="text-sm text-gray-500">{item.label}</p>
+                                <h3>{item.value}</h3>
+                            </motion.div>
+                        ))}
+                    </motion.div>
 
-                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
-                            <p className="text-sm text-gray-500">Duration</p>
-                            <h3>{trip.duration}</h3>
-                        </div>
-
-                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
-                            <p className="text-sm text-gray-500">Emergency Contact</p>
-                            <h3>{trip.contact}</h3>
-                        </div>
-                    </div>
-
-                    <h1 className="text-3xl text-orange-500 mb-4">{trip.title}</h1>
-                    <p>Status: {status.toUpperCase()}</p>{status !== "idle" && <p>Time Left: {formatTime(timeLeft)}</p>}
+                    <motion.h1 variants={fadeUp} className="text-3xl text-orange-500 mb-4">{trip.title}</motion.h1>
+                    <p>Status: {status.toUpperCase()}</p>
+                    {status !== "idle" && <p>Time Left: {formatTime(timeLeft)}</p>}
 
                     {showConnect && !connected && (
-                        <div className="mt-5">
-                            <button onClick={handleConnect}
-                                    className="px-6 py-3 bg-green-500 text-black rounded-xl">
+                        <motion.div initial={{scale: 0}} animate={{scale: 1}} className="mt-5">
+                            <motion.button whileTap={{scale: 0.9}} onClick={handleConnect}
+                                           className="px-6 py-3 bg-green-500 text-black rounded-xl">
                                 📞 Connect
-                            </button>
-                        </div>
+                            </motion.button>
+                        </motion.div>
                     )}
 
-                    <div className="flex gap-4 mt-6 flex-wrap">
-
-                        <button disabled={status !== "idle"}
-                                onClick={() => {
+                    <motion.div variants={stagger} className="flex gap-4 mt-6 flex-wrap">
+                        {[
+                            {
+                                label: "Start",
+                                disabled: status !== "idle",
+                                action: () => {
                                     setStatus("running");
                                     setTimeLeft(getSeconds(trip.duration));
                                     setIsSafe(false);
@@ -175,39 +189,36 @@ function BookDetail() {
                                     setShowConnect(false);
                                     saveActivity("START");
                                     toast.success("Started");
-                                }} className={`px-5 py-2 rounded-xl 
-                                ${status !== "idle"
-                            ? "bg-gray-600 cursor-not-allowed"
-                            : "bg-orange-500 text-black"}`}>
-                            Start
-                        </button>
-
-                        <button disabled={status !== "running"}
-                                onClick={() => {
+                                },
+                                style: status !== "idle"
+                                    ? "bg-gray-600"
+                                    : "bg-orange-500 text-black"
+                            },
+                            {
+                                label: "Pause",
+                                disabled: status !== "running",
+                                action: () => {
                                     setStatus("paused");
                                     saveActivity("PAUSE");
                                     toast.info("Paused");
-                                }} className={`px-5 py-2 rounded-xl border
-                                 ${status !== "running"
-                            ? "border-gray-600 text-gray-500 cursor-not-allowed"
-                            : "border-white/20"}`}>
-                            Pause
-                        </button>
-
-                        <button disabled={!(status === "running" || status === "paused")}
-                                onClick={() => {
+                                }
+                            },
+                            {
+                                label: "I'm Safe",
+                                disabled: !(status === "running" || status === "paused"),
+                                action: () => {
                                     setIsSafe(true);
                                     setStatus("completed");
                                     saveActivity("SAFE");
-                                }} className={`px-5 py-2 rounded-xl
-                            ${(status === "running" || status === "paused")
-                            ? "bg-green-500 text-black"
-                            : "bg-gray-600 cursor-not-allowed"}`}>
-                            I'm Safe
-                        </button>
-
-                        <button disabled={status === "idle"}
-                                onClick={() => {
+                                },
+                                style: (status === "running" || status === "paused")
+                                    ? "bg-green-500 text-black"
+                                    : "bg-gray-600"
+                            },
+                            {
+                                label: "Reset",
+                                disabled: status === "idle",
+                                action: () => {
                                     setStatus("idle");
                                     setTimeLeft(0);
                                     setIsSafe(false);
@@ -217,16 +228,22 @@ function BookDetail() {
                                     clearTimeout(connectTimerRef.current);
                                     saveActivity("RESET");
                                     toast.warn("Reset");
-                                }} className={`px-5 py-2 rounded-xl border
-                                ${status === "idle"
-                            ? "border-gray-600 text-gray-500 cursor-not-allowed"
-                            : "border-red-500 text-red-400"}`}>
-                            Reset
-                        </button>
-
-                    </div>
+                                }
+                            }
+                        ].map((btn, i) => (
+                            <motion.button key={i}
+                                           variants={fadeUp}
+                                           whileHover={{scale: btn.disabled ? 1 : 1.1}}
+                                           whileTap={{scale: btn.disabled ? 1 : 0.9}}
+                                           disabled={btn.disabled}
+                                           onClick={btn.action}
+                                           className={`px-5 py-2 rounded-xl cursor-pointer ${btn.style || "border"}`}>
+                                {btn.label}
+                            </motion.button>
+                        ))}
+                    </motion.div>
                 </div>
-            </section>
+            </motion.section>
 
             <Footer/>
             <ToastContainer position="top-right" autoClose={2000}/>
