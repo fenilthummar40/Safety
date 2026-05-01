@@ -2,7 +2,7 @@ import {useParams, useNavigate} from "react-router-dom";
 import Header from "../Component/Header.jsx";
 import {trips} from "../assets/assets.js";
 import Footer from "../Component/Footer.jsx";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -10,43 +10,48 @@ function BookDetail() {
 
     const {id} = useParams();
     const navigate = useNavigate();
-
     const trip = trips.find((t) => t.id === parseInt(id));
-
     const [status, setStatus] = useState("idle");
     const [timeLeft, setTimeLeft] = useState(0);
-    const [alertSent, setAlertSent] = useState(false);
     const [isSafe, setIsSafe] = useState(false);
+    const [showConnect, setShowConnect] = useState(false);
+    const [connected, setConnected] = useState(false);
+    const alertTimerRef = useRef(null);
+    const connectTimerRef = useRef(null);
+    const contactIndexRef = useRef(0);
+    const contacts = [trip?.contact, "Backup +91 000"];
 
     useEffect(() => {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
-        const user = localStorage.getItem("currentUser");
+        const user = JSON.parse(localStorage.getItem("currentUser"));
 
         if (!isLoggedIn || !user) {
             toast.error("Please login first 🔐");
-
-            setTimeout(() => {
-                navigate("/Login");
-            }, 1500);
+            setTimeout(() => navigate("/Login"), 1500);
         }
-    }, []);
+    }, [navigate]);
 
     const getSeconds = (duration) => {
-        if (duration.includes("Hour")) return parseInt(duration) * 60 * 60;
+        if (duration.includes("Hour")) return parseInt(duration) * 3600;
         if (duration.includes("Min")) return parseInt(duration) * 60;
-        return 60 * 60;
+        return 3600;
     };
 
-    const formatTime = (seconds) => {
-        const min = Math.floor(seconds / 60);
-        const sec = seconds % 60;
-        return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+    const formatTime = (sec) => {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m}:${s < 10 ? "0" : ""}${s}`;
     };
 
-    const saveActivity = (type) => {
+    const saveActivity = (type, contactUsed = "") => {
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        if (!user) return;
+
         const data = {
+            id: Date.now(),
+            userId: user.id,
             trip: trip.title,
-            contact: trip.contact,
+            contact: contactUsed || trip.contact,
             action: type,
             date: new Date().toLocaleDateString(),
             time: new Date().toLocaleTimeString(),
@@ -57,10 +62,43 @@ function BookDetail() {
         localStorage.setItem("activity", JSON.stringify(existing));
     };
 
-    const sendAlert = () => {
-        saveActivity("ALERT");
-        setAlertSent(true);
-        toast.error(`Alert sent to ${trip.contact}`);
+    const startAlertFlow = () => {
+        contactIndexRef.current = 0;
+        setConnected(false);
+
+        const runCycle = () => {
+            if (isSafe || connected) return;
+            const currentContact = contacts[contactIndexRef.current];
+
+            toast.error(`Alert sent to ${currentContact}`);
+            saveActivity("ALERT", currentContact);
+
+            connectTimerRef.current = setTimeout(() => {
+                if (isSafe || connected) return;
+                setShowConnect(true);
+
+                alertTimerRef.current = setTimeout(() => {
+                    if (isSafe || connected) return;
+                    setShowConnect(false);
+                    contactIndexRef.current =
+                        (contactIndexRef.current + 1) % contacts.length;
+                    runCycle();
+                }, 30000);
+
+            }, 30000);
+        };
+        runCycle();
+    };
+
+    const handleConnect = () => {
+        setConnected(true);
+        setShowConnect(false);
+
+        clearTimeout(connectTimerRef.current);
+        clearTimeout(alertTimerRef.current);
+
+        toast.success("📞 Call Connected. Alerts stopped.");
+        saveActivity("CONNECTED");
     };
 
     useEffect(() => {
@@ -74,129 +112,115 @@ function BookDetail() {
 
         if (timeLeft === 0 && status === "running" && !isSafe) {
             setStatus("completed");
-            sendAlert();
+            startAlertFlow();
         }
 
         return () => clearInterval(timer);
     }, [status, timeLeft, isSafe]);
 
-    if (!trip) {
-        return <p className="text-white p-10">Trip not found</p>;
-    }
+    useEffect(() => {
+        if (isSafe) {
+            clearTimeout(alertTimerRef.current);
+            clearTimeout(connectTimerRef.current);
+            toast.success("You're Safe");
+        }
+    }, [isSafe]);
+    if (!trip) return <p className="text-white p-10">Trip not found</p>;
 
     return (
         <>
             <Header/>
 
-            <section className="min-h-screen bg-[#0b0b0f] text-white px-6 py-10">
+            <section className="bg-[#0b0b0f] text-white px-6 py-10">
                 <div className="max-w-7xl mx-auto">
-                    <img src={trip.img} alt={trip.title} className="w-full h-[500px] object-cover rounded-2xl mb-8"/>
-                    <h1 className="text-3xl font-bold text-orange-500 mb-4">{trip.title}</h1>
-                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                    <img alt={trip.title} src={trip.img} className="w-full h-[400px] object-cover rounded-xl mb-6"/>
 
-                        <div className="bg-[#141419] p-5 rounded-xl">
+                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
                             <p className="text-sm text-gray-500">Time</p>
                             <h3>{trip.time}</h3>
                         </div>
 
-                        <div className="bg-[#141419] p-5 rounded-xl">
+                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
                             <p className="text-sm text-gray-500">Duration</p>
                             <h3>{trip.duration}</h3>
                         </div>
 
-                        <div className="bg-[#141419] p-5 rounded-xl">
+                        <div className="bg-[#141419] p-5 rounded-xl cursor-pointer">
                             <p className="text-sm text-gray-500">Emergency Contact</p>
                             <h3>{trip.contact}</h3>
                         </div>
-
                     </div>
 
-                    <div className="mb-6">
-                        <p>Status:
-                            <span className="text-orange-400 ml-2 font-semibold">
-                                {status.toUpperCase()}
-                            </span>
-                        </p>
+                    <h1 className="text-3xl text-orange-500 mb-4">{trip.title}</h1>
+                    <p>Status: {status.toUpperCase()}</p>{status !== "idle" && <p>Time Left: {formatTime(timeLeft)}</p>}
 
-                        {status !== "idle" && (
-                            <p className="text-gray-400">Time Left: {formatTime(timeLeft)}</p>
-                        )}
-                    </div>
-
-                    {alertSent && (
-                        <div className="bg-red-500/20 border border-red-500 p-4 rounded-xl mb-6">
-                            Alert sent to <strong>{trip.contact}</strong>
+                    {showConnect && !connected && (
+                        <div className="mt-5">
+                            <button onClick={handleConnect}
+                                    className="px-6 py-3 bg-green-500 text-black rounded-xl">
+                                📞 Connect
+                            </button>
                         </div>
                     )}
 
-                    {isSafe && (
-                        <div className="bg-green-500/20 border border-green-500 p-4 rounded-xl mb-6">
-                            You are safe. No alert was sent.
-                        </div>
-                    )}
+                    <div className="flex gap-4 mt-6 flex-wrap">
 
-                    {/* Buttons same as your code */}
-                    <div className="flex items-center flex-wrap gap-4">
-
-                        <button onClick={() => {
-                            if (status === "paused") {
-                                setStatus("running");
-                                toast.success("Resumed");
-                                saveActivity("RESUME");
-                            } else {
-                                setStatus("running");
-                                setTimeLeft(getSeconds(trip.duration));
-                                setAlertSent(false);
-                                setIsSafe(false);
-                                saveActivity("START");
-                                toast.success("Check-in Started");
-                            }
-                        }} disabled={status === "running"}
-                                className={`px-6 py-3 rounded-xl 
-                                ${status !== "running"
-                                    ? "bg-orange-500 text-black"
-                                    : "bg-gray-600 cursor-not-allowed"}`}>
-                            {status === "paused" ? "Resume" : "Start"}
+                        <button disabled={status !== "idle"}
+                                onClick={() => {
+                                    setStatus("running");
+                                    setTimeLeft(getSeconds(trip.duration));
+                                    setIsSafe(false);
+                                    setConnected(false);
+                                    setShowConnect(false);
+                                    saveActivity("START");
+                                    toast.success("Started");
+                                }} className={`px-5 py-2 rounded-xl 
+                                ${status !== "idle"
+                            ? "bg-gray-600 cursor-not-allowed"
+                            : "bg-orange-500 text-black"}`}>
+                            Start
                         </button>
 
-                        <button onClick={() => {
-                            setStatus("paused");
-                            saveActivity("PAUSE");
-                            toast.info("Paused");
-                        }} disabled={status !== "running"}
-                                className={`px-6 py-3 rounded-xl border 
-                                ${status === "running"
-                                    ? "border-white/20"
-                                    : "border-gray-600 text-gray-500 cursor-not-allowed"}`}>
+                        <button disabled={status !== "running"}
+                                onClick={() => {
+                                    setStatus("paused");
+                                    saveActivity("PAUSE");
+                                    toast.info("Paused");
+                                }} className={`px-5 py-2 rounded-xl border
+                                 ${status !== "running"
+                            ? "border-gray-600 text-gray-500 cursor-not-allowed"
+                            : "border-white/20"}`}>
                             Pause
                         </button>
 
-                        <button onClick={() => {
-                            setStatus("completed");
-                            setIsSafe(true);
-                            setTimeLeft(0);
-                            saveActivity("SAFE");
-                            toast.success("You're Safe");
-                        }} disabled={!(status === "running" || status === "paused")}
-                                className={`px-6 py-3 rounded-xl 
-                                ${(status === "running" || status === "paused")
-                                    ? "bg-green-500 text-black"
-                                    : "bg-gray-600 cursor-not-allowed"}`}>
+                        <button disabled={!(status === "running" || status === "paused")}
+                                onClick={() => {
+                                    setIsSafe(true);
+                                    setStatus("completed");
+                                    saveActivity("SAFE");
+                                }} className={`px-5 py-2 rounded-xl
+                            ${(status === "running" || status === "paused")
+                            ? "bg-green-500 text-black"
+                            : "bg-gray-600 cursor-not-allowed"}`}>
                             I'm Safe
                         </button>
 
-                        <button onClick={() => {
-                            setStatus("idle");
-                            setTimeLeft(0);
-                            setAlertSent(false);
-                            setIsSafe(false);
-                            saveActivity("RESET");
-                            toast.warn("Reset Done");
-                        }} disabled={status === "idle"}
-                                className={`px-6 py-3 rounded-xl border 
-                                ${status !== "idle"
-                                    ? "border-red-500 text-red-400"
-                                    : "border-gray-600 text-gray-500 cursor-not-allowed"}`}>
+                        <button disabled={status === "idle"}
+                                onClick={() => {
+                                    setStatus("idle");
+                                    setTimeLeft(0);
+                                    setIsSafe(false);
+                                    setConnected(false);
+                                    setShowConnect(false);
+                                    clearTimeout(alertTimerRef.current);
+                                    clearTimeout(connectTimerRef.current);
+                                    saveActivity("RESET");
+                                    toast.warn("Reset");
+                                }} className={`px-5 py-2 rounded-xl border
+                                ${status === "idle"
+                            ? "border-gray-600 text-gray-500 cursor-not-allowed"
+                            : "border-red-500 text-red-400"}`}>
                             Reset
                         </button>
 

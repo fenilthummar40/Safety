@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {IconChevronDown} from "@tabler/icons-react";
+import {motion, AnimatePresence} from "framer-motion";
 
 function Questions() {
     const faqs = [
@@ -27,42 +28,59 @@ function Questions() {
 
     const [open, setOpen] = useState(null);
 
+    const fadeUp = {
+        hidden: {opacity: 0, y: 40},
+        show: {opacity: 1, y: 0, transition: {duration: 0.5}}
+    };
+
+    const stagger = {
+        hidden: {},
+        show: {
+            transition: {
+                staggerChildren: 0.15
+            }
+        }
+    };
     return (
         <section className="py-20 text-white overflow-hidden">
+            <div className="max-w-4xl mx-auto px-6">
+                <motion.h2 variants={fadeUp} initial="hidden" whileInView="show"
+                           viewport={{once: true}} className="text-4xl md:text-5xl font-bold text-center mb-16">
+                    Frequently Asked <span className="text-orange-500">Questions</span>
+                </motion.h2>
 
-            <div className="max-w-4xl mx-auto px-6 relative">
-                <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Frequently Asked <span
-                    className="text-orange-500">Questions</span></h2>
+                <motion.div variants={stagger} initial="hidden" whileInView="show"
+                            viewport={{once: true}} className="space-y-4">
 
-                <div className="space-y-4">
-                    {faqs.map((item, i) => (
-                        <div key={i}
-                             className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden transition">
+                    {faqs.map((item, i) => {
+                        const isOpen = open === i;
 
-                            <button onClick={() => setOpen(open === i ? null : i)}
-                                    className="w-full flex justify-between items-center p-6 text-left">
-                                <span className="font-medium text-lg">{item.question}</span>
+                        return (
+                            <motion.div key={i} variants={fadeUp}
+                                        className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden">
+                                <button onClick={() => setOpen(isOpen ? null : i)}
+                                        className="w-full flex justify-between items-center p-6 text-left">
+                                    <span className="font-medium text-lg">{item.question}</span>
 
-                                <IconChevronDown
-                                    className={`transition-transform duration-300 ${
-                                        open === i ? "rotate-180 text-orange-400" : "text-gray-400"
-                                    }`}/>
-                            </button>
+                                    <motion.div animate={{rotate: isOpen ? 180 : 0}}
+                                                transition={{duration: 0.3}}>
+                                        <IconChevronDown className={isOpen ? "text-orange-400" : "text-gray-400"}/>
+                                    </motion.div>
+                                </button>
 
-                            <div
-                                className={`grid transition-all duration-300 ease-in-out ${
-                                    open === i
-                                        ? "grid-rows-[1fr] opacity-100"
-                                        : "grid-rows-[0fr] opacity-0"
-                                }`}>
-                                <div className="overflow-hidden">
-                                    <p className="px-6 pb-6 text-gray-400 text-sm leading-relaxed">{item.answer}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
+                                <AnimatePresence initial={false}>
+                                    {isOpen && (
+                                        <motion.div key="content" initial={{height: 0, opacity: 0}}
+                                                    animate={{height: "auto", opacity: 1}}
+                                                    exit={{height: 0, opacity: 0}} transition={{duration: 0.3}}>
+                                            <p className="px-6 pb-6 text-gray-400 text-sm leading-relaxed">{item.answer}</p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        );
+                    })}
+                </motion.div>
             </div>
         </section>
     );

@@ -40,12 +40,11 @@ function Profile() {
                             <button onClick={() => setSidebarOpen(false)}><IconX/></button>
                         </div>
                         <h2 className="hidden md:block text-lg font-semibold mb-6 text-orange-400">My Account</h2>
-
                         <ul className="space-y-2">
                             {menu.map((item) => (
                                 <li key={item.id} onClick={() => {
                                     setActiveTab(item.id);
-                                    setSidebarOpen(false); // auto close mobile
+                                    setSidebarOpen(false);
                                 }}
                                     className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition
                                     ${
@@ -58,7 +57,6 @@ function Profile() {
                         </ul>
                     </div>
 
-                    {/* 🔥 Content */}
                     <div
                         className="flex-1 backdrop-blur-lg border border-white/10 rounded-2xl p-6 md:p-8 h-[765px] overflow-y-scroll no-scrollbar">
 
@@ -82,30 +80,32 @@ function Profile() {
                                                 type="text" placeholder='Enter any your last name'/>
                                         </div>
                                         <div>
-                                            <label className='text-sm text-gray-400' htmlFor="">E-mail</label> <input
-                                            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
-                                            type="email" placeholder='Enter any your email'/>
+                                            <label className='text-sm text-gray-400' htmlFor="">E-mail :</label>
+                                            <input
+                                                className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                                type="email" placeholder='Enter any your email'/>
                                         </div>
                                         <div>
-                                            <label className='text-sm text-gray-400' htmlFor="">Phone Number</label>
+                                            <label className='text-sm text-gray-400' htmlFor="">Phone Number :</label>
                                             <input
                                                 className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                                 type="number" placeholder='Enter any your phone number'/>
                                         </div>
                                         <div>
-                                            <label className='text-sm text-gray-400' htmlFor="">City</label> <input
-                                            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
-                                            type="text" placeholder='Enter any your city'/>
+                                            <label className='text-sm text-gray-400' htmlFor="">City :</label>
+                                            <input
+                                                className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                                type="text" placeholder='Enter any your city'/>
                                         </div>
                                         <div>
-                                            <label className='text-sm text-gray-400' htmlFor="">Pin Code</label> <input
-                                            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
-                                            type="number" placeholder='Enter any your pin code'/>
+                                            <label className='text-sm text-gray-400' htmlFor="">Pin Code :</label>
+                                            <input
+                                                className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                                type="number" placeholder='Enter any your pin code'/>
                                         </div>
                                     </div>
                                     <div className='mt-5'>
-                                        <label className='text-sm text-gray-400'
-                                               htmlFor="">Message</label>
+                                        <label className='text-sm text-gray-400' htmlFor="">Message :</label>
                                         <textarea
                                             className="w-full mt-2 px-4 py-3 rounded-xl bg-[#141419] border border-white/10 text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                             name="" id="" cols="30" rows="5"
@@ -158,35 +158,47 @@ function Profile() {
 
                         {activeTab === "bookings" && (
                             <>
-                                <h2 className="text-2xl font-semibold mb-6 text-orange-400">
-                                    Your Safety Trips History
-                                </h2>
+                                <h2 className="text-2xl font-semibold mb-6 text-orange-400">Your Safety Trips
+                                    History</h2>
 
                                 {(() => {
                                     const data = JSON.parse(localStorage.getItem("activity")) || [];
-
-                                    if (data.length === 0) {
+                                    if (!Array.isArray(data) || data.length === 0) {
                                         return (
-                                            <p className="text-gray-400">
-                                                No activity found.
-                                            </p>
+                                            <p className="text-gray-400">No activity found. Start a check-in to see
+                                                history.</p>
                                         );
                                     }
 
-                                    return data.slice().reverse().map((item, index) => (
-                                        <div key={index}
-                                             className="bg-[#141419] border border-white/10 p-5 rounded-xl flex justify-between items-center mb-3">
-                                            <div>
-                                                <h3 className="text-lg">{item.trip}</h3>
-                                                <p className="text-sm text-gray-400">{item.contact}</p>
-                                            </div>
+                                    return (
+                                        <div className="space-y-4">
+                                            {data.slice().reverse().map((item, index) => (
+                                                <div key={item.id || index}
+                                                     className="bg-[#141419] border border-white/10 p-5 rounded-xl flex justify-between items-center">
+                                                    <div>
+                                                        <h3 className="text-lg font-semibold text-white">{item.trip || "No Trip"}</h3>
+                                                        <p className="text-sm text-gray-400">Contact: {item.contact || "N/A"}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">{item.date || ""} • {item.time || ""}</p>
+                                                    </div>
 
-                                            <span
-                                                className="text-sm px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full">
-                                                {item.action}
-                                            </span>
+                                                    <span
+                                                        className={`px-3 py-1 text-sm rounded-full font-medium cursor-pointer
+                                                            ${
+                                                            item.action === "START"
+                                                                ? "bg-blue-500/20 text-blue-400"
+                                                                : item.action === "PAUSE"
+                                                                    ? "bg-yellow-500/20 text-yellow-400"
+                                                                    : item.action === "SAFE"
+                                                                        ? "bg-green-500/20 text-green-400"
+                                                                        : item.action === "ALERT"
+                                                                            ? "bg-red-500/20 text-red-400"
+                                                                            : "bg-gray-500/20 text-gray-300"
+                                                        }`}>{item.action || "UNKNOWN"}
+                                                    </span>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ));
+                                    );
                                 })()}
                             </>
                         )}
