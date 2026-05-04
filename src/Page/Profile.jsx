@@ -152,6 +152,13 @@ function Profile() {
                                             className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">Change
                                         </button>
                                     </div>
+                                    <div
+                                        className="bg-[#141419] border border-white/10 rounded-xl p-5 flex items-center justify-between mt-5">
+                                        <h5 className="text-lg font-semibold text-white">Account Delete</h5>
+                                        <button
+                                            className="px-4 py-1.5 text-sm rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition cursor-pointer">Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </>
                         )}
