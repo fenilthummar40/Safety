@@ -56,7 +56,7 @@ function Header() {
         setUser(null);
         setOpen(false);
 
-        toast.success("Logout Successfully 👋");
+        toast.success("Logout Successfully");
 
         setTimeout(() => {
             navigate("/Login");
